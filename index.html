@@ -1,183 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title></title>
+  <title>What's the clue?</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
+
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-
   <section id="startScreen">
-    <div id="startContainer">
+    <div id="startContainer" class="container">
       <div id="titleContainer">
-        <img src="assets/title_main.png" alt="What's the clue?"/>
+        <img src="img/title_main.png" alt="What's the clue?"/>
       </div>
       <div id="optionsContainer">
         <div id="buttonsContainer">
-          <a href="#contentScreen">
-            <img src="assets/play_button.png" id="playButton" alt="Play button"/>
-          </a>
-          <a href="#creditsScreen">
-            <img src="assets/credits_button.png" id="creditsButton" alt="Credits button"/>
-          </a>
+          <img src="img/play_button.png" id="playButton" alt="Play button" onclick="openLevelsScreen();"/>
+          <img src="img/credits_button.png" id="creditsButton" alt="Credits button" onclick="openCreditsScreen();"/>
         </div>
         <div id="loadingBarContainer">
-          <img src="assets/loading_bar.png" alt="Loading bar"/>
+          <img src="img/loading_bar_container.png" id="loadingBarContainer" alt="Loading bar"/>
+          <img src="img/loading_bar_solid.png" id="loadingBarSolid" alt="Loading bar">
         </div>
       </div>
     </div>
   </section>
 
   <section id="instructionsScreen">
-    <div id="instructionsContainer">
+    <div id="instructionsContainer" class="container">
       <div id="guideDotsContainer">
-        <img src="assets/guide_dots_instructions.png" id="guideDots" alt="Guide dots"/>
-        <img src="assets/instructions_guide_line.png" id="guideLine" alt="Guide line"/>
+        <img src="img/guide_dots_instructions.png" id="guideDots" alt="Guide dots"/>
+        <img src="img/instructions_guide_line.png" id="guideLine" alt="Guide line"/>
       </div>
       <div id="instructionText">
-        <img src="assets/instructions_text.png" alt="Instructions text"/>
+        <img src="img/instructions_text.png" alt="Instructions text"/>
       </div>
     </div>
   </section>
 
   <section id="contentScreen">
-    <div id="contentContainer">
+    <svg class="canvas" id="svg">
+    </svg>
+
+    <div id="contentContainer" class="container">
       <div id="contentButtonsContainer">
-        <div id="backButton">
-          <a href="#levelsScreen">
-            <img src="assets/back_button.png" alt="Back button"/>
-          </a>
+        <div id="backButton" class="Button">
+          <img src="img/back_button.png" alt="Back button" onclick="openLevelsScreen();"/>
         </div>
-        <div id="clueButton">
-          <img src="assets/clue_button.png" alt="Clue button"/>
+        <div id="homeButton" class="Button">
+          <img src="img/home_button.png" alt="Home Button" onclick="openStartScreen();">
         </div>
-        <div id="instructionsButton">
-          <a href="#instructionsScreen">
-            <img src="assets/instructions_button.png" alt="Instructions button"/>
-          </a>
-        </div>
-      </div>
-      <div id="contentDots">
-        <img src="assets/guide_dots.png"/>
+        <!-- <div id="clueButton" class="Button">
+        <img src="img/clue_button.png" alt="Clue button" onclick="showClueModal();"/>
+      </div> -->
+      <div id="instructionsButton" class="Button">
+        <img src="img/instructions_button.png" alt="Instructions button" onclick="openInstructionsScreen();"/>
       </div>
     </div>
-  </section>
-
-  <section id="levelsScreen">
-    <div id="levelsContainer">
-      <div id="levelsButtonsContainer">
-        <div id="backButton">
-          <a href="#contentScreen">
-            <img src="assets/back_button.png" alt="Back button"/>
-          </a>
-        </div>
-      </div>
-      <div id="levelsTitleContainer">
-        <div id="levelsTitle">
-          <img src="assets/levels_text.png" alt="Levels title">
-        </div>
-      </div>
-      <div id="levelsListContainer">
-        <div class="buttonLevel">
-          <img src="assets/button_level1.png" alt="Level 1">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level2.png" alt="Level 2">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level3.png" alt="Level 3">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level4.png" alt="Level 4">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level5.png" alt="Level 5">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level6.png" alt="Level 6">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level7.png" alt="Level 7">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level8.png" alt="Level 8">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level9.png" alt="Level 9">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level10.png" alt="Level 10">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-        <div class="buttonLevel">
-          <img src="assets/button_level_locked.png" alt="Level locked">
-        </div>
-      </div>
+    <div id="contentLevelContainer">
+    </div>
+    <div id="contentDots">
     </div>
 
-  </section>
+  </div>
+</section>
 
-  <section id="creditsScreen">
-    <div id="creditsContainer">
-      <div id="creditsButtonsContainer">
-        <div id="backButton">
-          <a href="#startScreen">
-            <img src="assets/back_button.png" alt="Back button"/>
-          </a>
-        </div>
-      </div>
-      <div id="creditsTitleContainer">
-        <img src="assets/credits_title.png" alt="Credits">
-      </div>
-      <div id="creditsTextContainer">
-        <img src="assets/name_1.png" alt="">
-        <img src="assets/name_2.png" alt="">
-        <img src="assets/name_3.png" alt="">
+<section id="levelsScreen">
+  <div id="levelsContainer" class="container">
+    <div id="levelsButtonsContainer">
+      <div id="backButton">
+        <img src="img/back_button.png" alt="Back button" onclick="backContentScreen();"/>
       </div>
     </div>
-  </section>
+    <div id="levelsTitleContainer">
+      <div id="levelsTitle">
+        <img src="img/levels_text.png" alt="Levels title">
+      </div>
+    </div>
+    <div id="levelsListContainer">
+    </div>
+  </div>
+
+</section>
+
+<section id="creditsScreen">
+  <div id="creditsContainer" class="container">
+    <div id="creditsButtonsContainer">
+      <div id="backButton">
+        <img src="img/back_button.png" alt="Back button" onclick="openStartScreen();"/>
+      </div>
+    </div>
+    <div id="creditsTitleContainer">
+      <img src="img/credits_title.png" alt="Credits">
+    </div>
+    <div id="creditsTextContainer">
+      <img src="img/name_1.png" alt="">
+      <img src="img/name_2.png" alt="">
+      <img src="img/name_3.png" alt="">
+    </div>
+  </div>
+</section>
+
+<section id="resultGameModal">
+  <div id="modalContent">
+    <div id="modalFigure">
+
+    </div>
+    <div id="modalText">
+
+    </div>
+    <div id="modalButtons">
+
+    </div>
+  </div>
+</section>
+
+<section id="clueModal">
+  <div id="clueModalContent">
+
+  </div>
+</section>
 
 
-  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
+<script src="js/vendor/modernizr-3.6.0.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/arraysClues.js"></script>
+<script src="js/main.js"></script>
 </body>
 
 </html>

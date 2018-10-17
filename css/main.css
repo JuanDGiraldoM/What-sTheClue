@@ -97,9 +97,20 @@ Browser Upgrade Prompt
 Author's custom styles
 ========================================================================== */
 
-section {
-  height: 1280px;
-  width: 720px;
+/* --------------------------------------------------------------------------
+Dimensions of the sections
+-------------------------------------------------------------------------- */
+
+body {
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  width: 360px;
+  height: 640px;
 }
 
 /* --------------------------------------------------------------------------
@@ -107,13 +118,7 @@ Main interface's rules
 -------------------------------------------------------------------------- */
 
 #startContainer {
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/background_main.png");
-  background-size: 720px 1280px;
-  background-repeat: no-repeat;
-  height: 1280px;
-  width: 720px;
+  background-image: url("../img/background_main.png");
 }
 
 #titleContainer {
@@ -124,8 +129,7 @@ Main interface's rules
 }
 
 #titleContainer img {
-  width: 70%;
-  padding-bottom: 30%;
+  padding-bottom: 35%;
 }
 
 #optionsContainer {
@@ -138,46 +142,50 @@ Main interface's rules
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  position: relative;
 }
 
-#loadingBarContainer img {
-  width: 32%;
-  padding-top: 1%;
+#loadingBarContainer [id=loadingBarContainer] {
+  width: 250px;
+  height: 15px;
+  padding-top: 2%;
+}
+
+#loadingBarContainer [id=loadingBarSolid] {
+  position: absolute;
+  width: 0px;
+  height: 6px;
+  top: 55%;
 }
 
 #buttonsContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 }
 
-a #playButton {
-  /* padding-right: 1%;
-  width: 15%; */
-  width: 70%;
-  padding-left: 20%;
+#buttonsContainer > img {
+  visibility: hidden;
 }
 
-a #creditsButton {
-  /* padding-left: 1%;
-  width: 15%; */
-  width: 70%;
-  padding-right: 20%;
+#playButton {
+  width: 120px;
+  padding-right: 5px;
 }
+
+#creditsButton {
+  width: 120px;
+  padding-left: 5px;
+}
+
 
 /* --------------------------------------------------------------------------
 Instructions interface's rules
 -------------------------------------------------------------------------- */
 
 #instructionsContainer {
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/background_instructions.png");
-  background-size: 720px 1280px;
-  background-repeat: no-repeat;
-  height: 1280px;
-  width: 720px;
+  background-image: url("../img/background_instructions.png");
 }
 
 #guideDotsContainer {
@@ -189,17 +197,16 @@ Instructions interface's rules
 }
 
 #guideDots {
-  width: 30%;
   padding-top: 20%;
 }
 
 #guideLine {
-  width: 5px;
-  height: 188px;
+  width: 2px;
+  height: 95px;
   position: absolute;
-  bottom: 9.8%;
-  right: 50.8%;
-  left: 49.2%;
+  bottom: 9.2%;
+  right: 50.7%;
+  left: 49.3%;
 }
 
 #instructionText {
@@ -210,7 +217,6 @@ Instructions interface's rules
 }
 
 #instructionText img {
-  width: 75%;
   padding-bottom: 20%;
 }
 
@@ -219,36 +225,15 @@ Content interface's rules
 -------------------------------------------------------------------------- */
 
 #contentContainer {
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/background_content.png");
-  background-size: 720px 1280px;
-  background-repeat: no-repeat;
-  height: 1280px;
-  width: 720px;
+  background-image: url("../img/background_content.png");
 }
 
 #contentButtonsContainer {
   display: flex;
-  flex-direction: row;
-  margin-top: 100px;
+  padding: 13% 1%;
 }
 
-#backButton {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-}
-
-#clueButton {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-}
-
-#instructionsButton {
+#contentButtonsContainer > .Button {
   display: flex;
   flex: 1;
   align-items: center;
@@ -257,13 +242,27 @@ Content interface's rules
 
 #contentDots {
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
-  align-items: center;
 }
 
-#contentDots img {
-  width: 40%;
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row > img {
+  width: 22px;
+  padding: 2px;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+#contentLevel {
+  display: flex;
+  margin: auto;
 }
 
 /* --------------------------------------------------------------------------
@@ -271,13 +270,7 @@ Levels interface's rules
 -------------------------------------------------------------------------- */
 
 #levelsContainer {
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/background_levels.png");
-  background-size: 720px 1280px;
-  background-repeat: no-repeat;
-  height: 1280px;
-  width: 720px;
+  background-image: url("../img/background_levels.png");
 }
 
 #levelsButtonsContainer {
@@ -304,23 +297,13 @@ Levels interface's rules
   justify-content: left;
 }
 
-.buttonLevel > img {
-  width: 110px;
-}
-
 
 /* --------------------------------------------------------------------------
 Credits interface's rules
 -------------------------------------------------------------------------- */
 
 #creditsContainer {
-  display: flex;
-  flex-direction: column;
-  background-image: url("../assets/background_credits.png");
-  background-size: 720px 1280px;
-  background-repeat: no-repeat;
-  height: 1280px;
-  width: 720px;
+  background-image: url("../img/background_credits.png");
 }
 
 #creditsButtonsContainer {
@@ -349,11 +332,123 @@ Credits interface's rules
   justify-content: flex-start;
 }
 
+/* --------------------------------------------------------------------------
+Result modal rules
+-------------------------------------------------------------------------- */
+
+#resultGameModal {
+  display: none;
+  position: fixed;
+  top:0;
+  bottom:0;
+  right: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../img/background_modal.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 310px 550px;
+}
+
+#modalContent {
+  display: flex;
+  margin: 0% 10%;
+  flex-direction: column;
+  align-items: center;
+}
+
+#modalText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
+}
+
+#modalText > img {
+  width: 85%;
+  height: 85%;
+}
+
+#modalFigure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10%;
+  padding-top: 25%;
+}
+
+#modalFigure > img {
+  width: 40%;
+  height: 40%;
+}
+
+#modalButtons {
+  display: flex;
+  flex-direction: row;
+  padding-top: 5%;
+  width: 85%;
+}
+
+#modalButtons > div {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
 
 
+/* --------------------------------------------------------------------------
+Clue modal rules
+-------------------------------------------------------------------------- */
 
+#clueModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top:0;
+  bottom:0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+}
 
+#clueModalContent {
+  display: flex;
+  margin-right: 7%;
+  margin-left: 7%;
+  flex-direction: column;
+  border-style: solid;
+  border-color: rgb(0, 67, 111);
+  background-color: black;
+  border-radius: 10px;
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
 
+#clueModalContent > img {
+  width: 85%;
+}
+
+/* ==========================================================================
+Canvas
+========================================================================== */
+
+.canvas {
+  position: absolute;
+  width: 360px;
+}
+
+.canvas > line {
+  stroke: #ee1583;
+  stroke-width: 3;
+  z-index: 0;
+}
 
 
 /* ==========================================================================
