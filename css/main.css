@@ -97,6 +97,19 @@ Browser Upgrade Prompt
 Author's custom styles
 ========================================================================== */
 
+.hidden {
+  visibility: hidden;
+}
+
+.nondisplay {
+  display: none;
+}
+
+.show {
+  display: block !important;
+  visibility: visible !important;
+}
+
 /* --------------------------------------------------------------------------
 Dimensions of the sections
 -------------------------------------------------------------------------- */
@@ -188,6 +201,14 @@ Instructions interface's rules
   background-image: url("../img/background_instructions.png");
 }
 
+#instructionsButton {
+  padding-left: 100px;
+}
+
+#levelsButtonsContainer > #backButton {
+  padding-right: 100px;
+}
+
 #guideDotsContainer {
   display: flex;
   flex: 1;
@@ -230,7 +251,7 @@ Content interface's rules
 
 #contentButtonsContainer {
   display: flex;
-  padding: 13% 1%;
+  padding: 13% 7%;
 }
 
 #contentButtonsContainer > .Button {
@@ -256,7 +277,7 @@ Content interface's rules
 .row > img {
   width: 22px;
   padding: 2px;
-  opacity: 0.5;
+  opacity: 0;
   z-index: 1;
 }
 

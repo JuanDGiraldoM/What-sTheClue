@@ -11,7 +11,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
 
-
+  <link rel="stylesheet" href="css/animate.min.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
@@ -59,82 +59,85 @@
         <div id="homeButton" class="Button">
           <img src="img/home_button.png" alt="Home Button" onclick="openStartScreen();">
         </div>
-        <!-- <div id="clueButton" class="Button">
-        <img src="img/clue_button.png" alt="Clue button" onclick="showClueModal();"/>
-      </div> -->
-      <div id="instructionsButton" class="Button">
-        <img src="img/instructions_button.png" alt="Instructions button" onclick="openInstructionsScreen();"/>
+        <div id="clueButton" class="Button">
+          <img src="img/clue_button.png" alt="Clue button" onclick="activeClue(event);"/>
+        </div>
+        <div id="retryButton" class="Button">
+          <img src="img/retry_button.png" alt="Retry button" onclick="retryLevel();"/>
+        </div>
+      </div>
+      <div id="contentLevelContainer">
+      </div>
+      <div id="contentDots">
+      </div>
+
+    </div>
+  </section>
+
+  <section id="levelsScreen">
+    <div id="levelsContainer" class="container">
+      <div id="levelsButtonsContainer">
+        <div id="backButton" class="Button">
+          <img src="img/back_button.png" alt="Back button" onclick="openContentScreen();"/>
+        </div>
+        <div id="instructionsButton" class="Button">
+          <img src="img/instructions_button.png" alt="Instructions button" onclick="openInstructionsScreen();"/>
+        </div>
+      </div>
+      <div id="levelsTitleContainer">
+        <div id="levelsTitle">
+          <img src="img/levels_text.png" alt="Levels title">
+        </div>
+      </div>
+      <div id="levelsListContainer">
       </div>
     </div>
-    <div id="contentLevelContainer">
-    </div>
-    <div id="contentDots">
-    </div>
 
-  </div>
-</section>
+  </section>
 
-<section id="levelsScreen">
-  <div id="levelsContainer" class="container">
-    <div id="levelsButtonsContainer">
-      <div id="backButton">
-        <img src="img/back_button.png" alt="Back button" onclick="backContentScreen();"/>
+  <section id="creditsScreen">
+    <div id="creditsContainer" class="container">
+      <div id="creditsButtonsContainer">
+        <div id="backButton">
+          <img src="img/back_button.png" alt="Back button" onclick="openStartScreen();"/>
+        </div>
+      </div>
+      <div id="creditsTitleContainer">
+        <img src="img/credits_title.png" alt="Credits">
+      </div>
+      <div id="creditsTextContainer">
+        <img src="img/name_1.png" alt="">
+        <img src="img/name_2.png" alt="">
+        <img src="img/name_3.png" alt="">
       </div>
     </div>
-    <div id="levelsTitleContainer">
-      <div id="levelsTitle">
-        <img src="img/levels_text.png" alt="Levels title">
+  </section>
+
+  <section id="resultGameModal">
+    <div id="modalContent">
+      <div id="modalFigure">
+
+      </div>
+      <div id="modalText">
+
+      </div>
+      <div id="modalButtons">
+
       </div>
     </div>
-    <div id="levelsListContainer">
-    </div>
-  </div>
+  </section>
 
-</section>
-
-<section id="creditsScreen">
-  <div id="creditsContainer" class="container">
-    <div id="creditsButtonsContainer">
-      <div id="backButton">
-        <img src="img/back_button.png" alt="Back button" onclick="openStartScreen();"/>
-      </div>
-    </div>
-    <div id="creditsTitleContainer">
-      <img src="img/credits_title.png" alt="Credits">
-    </div>
-    <div id="creditsTextContainer">
-      <img src="img/name_1.png" alt="">
-      <img src="img/name_2.png" alt="">
-      <img src="img/name_3.png" alt="">
-    </div>
-  </div>
-</section>
-
-<section id="resultGameModal">
-  <div id="modalContent">
-    <div id="modalFigure">
+  <section id="clueModal">
+    <div id="clueModalContent">
 
     </div>
-    <div id="modalText">
-
-    </div>
-    <div id="modalButtons">
-
-    </div>
-  </div>
-</section>
-
-<section id="clueModal">
-  <div id="clueModalContent">
-
-  </div>
-</section>
+  </section>
 
 
-<script src="js/vendor/modernizr-3.6.0.min.js"></script>
-<script src="js/plugins.js"></script>
-<script src="js/arraysClues.js"></script>
-<script src="js/main.js"></script>
+  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/arraysClues.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>

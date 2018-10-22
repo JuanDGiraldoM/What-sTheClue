@@ -8,12 +8,11 @@ var creditsButton;
 var resultGameModal;
 var clueModal;
 
-var dots;
-var numberDots;
-var correctDots;
+var clue;
 var currentClue;
 var svg;
 var arrayDots = [];
+var arrayDotsPushed = [];
 const GAME_LEVELS = 10;
 
 var app = {
@@ -57,6 +56,7 @@ function initVariables() {
   resultGameModal = document.getElementById('resultGameModal');
   clueModal = document.getElementById('clueModal');
   svg = document.getElementById('svg');
+  clue = false;
 
   if(!localStorage.getItem("level")){
     localStorage.setItem("level", 1);
@@ -67,6 +67,8 @@ function initVariables() {
 }
 
 function loadGame() {
+  titleContainer.className = "animated slideInDown";
+  loadingBarContainer.className = "animated fadeIn";
   var solidBar = document.getElementById("loadingBarSolid");
   var solidBarWidth = 1;
   var barAnimation = setInterval(renderFrame, 2);
@@ -74,7 +76,7 @@ function loadGame() {
   function renderFrame() {
     if (solidBarWidth > 249) {
       clearInterval(barAnimation);
-      setTimeout(showStartButtons, 300);
+      setTimeout(showStartButtons, 50);
     } else {
       solidBarWidth++;
       solidBar.style.width = solidBarWidth + 'px';
@@ -83,8 +85,8 @@ function loadGame() {
 }
 
 function showStartButtons() {
-  playButton.style.visibility = 'visible';
-  creditsButton.style.visibility = 'visible';
+  playButton.className = "show animated bounceInUp";
+  creditsButton.className = "show animated bounceInUp";
 }
 
 function backContentScreen() {
@@ -96,13 +98,16 @@ function openContentScreen() {
   hideScreens();
   setLevelClue(currentLevel);
   contentScreen.style.display = 'block';
-  level(currentLevel);
+  level();
   numberLevelImage(currentLevel);
+  contentLevel.className = "animated rotateIn faster";
 }
 
 function openCreditsScreen() {
   hideScreens();
   creditsScreen.style.display = 'block';
+  creditsTitleContainer.className = "animated slideInDown";
+  creditsTextContainer.className = "animated slideInUp";
 }
 
 function openLevelsScreen() {
@@ -115,8 +120,14 @@ function openLevelsScreen() {
 function openInstructionsScreen() {
   hideScreens();
   instructionsScreen.style.display= 'block';
-  setTimeout(function() {
-    openContentScreen()
+  guideDotsContainer.className = "animated slideInDown";
+  instructionText.className = "animated slideInUp";
+  setTimeout(function(){
+    setTimeout(function() {
+      openLevelsScreen();
+    }, 500);
+    guideDotsContainer.className = "animated slideOutUp";
+    instructionText.className = "animated slideOutDown";
   }, 5000);
 }
 
@@ -150,32 +161,33 @@ function showClueModal() {
   }
 }
 
+function activeClue(event) {
+  clue = !clue;
+  event.target.src = (clue) ? "img/clue_button_active.png" : "img/clue_button.png";
+  level();
+}
+
 function showClueDots(dotId) {
   var canvas = document.getElementById(dotId);
   canvas.style.opacity = 1;
   canvas.src = "img/dot_2.png";
-  setTimeout(function showDefaultDots(){
+  setTimeout(function(){
     canvas.style.opacity = 0.2;
     canvas.src = "img/dot_off_2.png";
   }, 1000);
 }
 
-function level(levelGame) {
+function level() {
   var canvas = document.getElementById('contentDots');
   var html = "";
   assignLevel();
-  countDots();
   resetSVG();
+  initArrayDots();
 
   for (var i = 0; i < currentClue.length; i++) {
     html += '<div class="row">';
     for(var j = 0; j < currentClue[0].length; j++) {
-      if (currentClue[i][j] == 1) {
-        html += '<img src=./img/dot_6.png alt="Dot" id=' + i + '_' + j + ' onclick="changeButtonState(event);"/>';
-      }
-      else {
-        html += '<img src=./img/dot_off_1.png alt="Dot" id=' + i + '_' + j + '"/>';
-      }
+      html += (currentClue[i][j]) ? '<img src=./img/dot_6.png id=' + i + '_' + j + ' onclick="changeButtonState(event);">' : '<img src=./img/dot_off_1.png id=' + i + '_' + j + ' ">';
     }
     html += '</div>'
   }
@@ -184,6 +196,26 @@ function level(levelGame) {
   setTimeout(function(){
     adjustSVG(canvas);
   }, 100);
+
+  openNextDot();
+}
+
+function initArrayDots() {
+  arrayDots= [], arrayDotsPushed = [];
+  var value;
+  for (var i = 0; i < currentClue.length; i++) {
+    for (var j = 0; j < currentClue[0].length; j++) {
+      value = currentClue[i][j];
+      if (value.length) {
+        for (var h = 0; h < value.length; h++) {
+          arrayDots[value[h] - 1] = i + "_" + j;
+        }
+      }
+      else if (value) {
+        arrayDots[value - 1] = i + "_" + j;
+      }
+    }
+  }
 }
 
 function changeButtonState(event) {
@@ -193,78 +225,91 @@ function changeButtonState(event) {
     position: getPositionDot(pos)
   };
 
-  if (arrayDots.length > 0 && dot.id == arrayDots[arrayDots.length - 1].id) {
-    event.target.style.opacity = 0.5;
+  if (arrayDotsPushed.length > 0 && dot.id == arrayDotsPushed[arrayDotsPushed.length - 1].id && event.target.alt === 'Dot press') {
     event.target.src = "img/dot_6.png";
+    event.target.style.opacity = 0.5;
     event.target.alt = "Dot";
-    if (currentClue[pos[0]][pos[1]]) {
-      correctDots--;
-    }
-    numberDots++;
-
-    arrayDots.pop();
+    hideNextDot();
+    arrayDotsPushed.pop();
     dropLine();
   }
-  else if (event.target.alt === 'Dot') {
-    event.target.style.opacity = 1;
-    if (numberDots != dots) {
-      event.target.src = "img/dot_2.png";
-      event.target.alt = "Dot press";
-      if (currentClue[pos[0]][pos[1]]) {
-        correctDots++;
-      }
-      numberDots--;
-    }
-    else {
-      dots = 0;
-    }
 
-    arrayDots.push(dot);
+  else if (event.target.alt === 'Dot') {
+    event.target.src = "img/dot_2.png";
+    event.target.style.opacity = 1;
+    event.target.alt = "Dot press";
+    arrayDotsPushed.push(dot);
+    openNextDot();
     drawLine();
   }
 
-  if(!numberDots) {
-    numberDots += correctDots;
-    if(correctDots == numberDots){
-      setTimeout(function() {
+  if (arrayDots.length === arrayDotsPushed.length) {
+    setTimeout(function() {
+      if (validateLevel()) {
         showResultModal(true);
-      }, 200);
+      }
+      else {
+        showResultModal(false);
+      }
+    }, 200);
+  }
+}
+
+function validateLevel() {
+  var flag = true;
+  for (var i = 0; i < arrayDots.length; i++) {
+    if (arrayDots[i] != arrayDotsPushed[i].id) {
+      if (clue) {
+        return false;
+      }
+      flag = false;
+      break;
     }
-    else {
-      showResultModal(false);
+  }
+  if (!clue && !flag) {
+    for (var i = 0; i < arrayDots.length; i++) {
+      if (arrayDotsPushed[i].id != arrayDots[arrayDots.length - 1 - i]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function openNextDot() {
+  if (clue | arrayDotsPushed.length == 0 | arrayDotsPushed.length == arrayDots.length - 1) {
+    var dot = document.getElementById(arrayDots[arrayDotsPushed.length]);
+    if (dot) {
+      dot.style.opacity = 0.5;
+      dot.alt = "Dot"
+      dot.className = "animated zoomIn faster";
+    }
+  }
+  else if (arrayDotsPushed.length == 1) {
+    var initial_dot = arrayDots[0];
+    for (var i = 1; i < arrayDots.length - 1; i++) {
+      var dot = document.getElementById(arrayDots[i]);
+      dot.style.opacity = 0.5;
+      dot.alt = "Dot"
+      dot.className = "animated zoomIn faster";
+
     }
   }
 }
 
-function countDots() {
-  numberDots = 0;
-  correctDots = 0;
-  dots = 0;
-
-  for (var i = 0; i < currentClue.length; i++) {
-    for (var j = 0; j < currentClue[0].length; j++) {
-      if (currentClue[i][j]) {
-        numberDots++;
-      }
-    }
+function hideNextDot() {
+  if (clue) {
+    var dot = document.getElementById(arrayDots[arrayDotsPushed.length]);
+    dot.className = "animated zoomOut";
+    setTimeout(function(){
+      dot.style.opacity = 0;
+      dot.alt = "";
+    }, 250);
   }
-  dots = numberDots;
-}
-
-function validateLevel(){
-  var dots = 0;
-  for (var i = 0; i < currentClue.length; i++) {
-    for (var j = 0; j < currentClue[0].length; j++) {
-      if (currentClue[i][j]) {
-        dots++;
-      }
-    }
-  }
-  return (dot === correctDots) ? true : false;
 }
 
 function assignLevel(){
-  currentClue = clues[Number(localStorage.getItem("level")) -1];
+  currentClue = clues[Number(localStorage.getItem("level")) - 1];
 }
 
 function increaseLevel() {
@@ -274,15 +319,14 @@ function increaseLevel() {
   }
 }
 
-function showAvailableLevels(){
-  assignLevel();
-  var canvas = document.getElementById("levelsListContainer");
+function showAvailableLevels() {
   var html = "";
+  var canvas = document.getElementById("levelsListContainer");
   var lvlTmp = Number(localStorage.getItem("maxLevel"));
 
   for(var i=1; i<=20; i++) {
     html += '<div class="buttonLevel">';
-    html += (i <= lvlTmp) ? '<img src="img/button_level' + i + '.png" alt="Level ' + i + '" id =' + i + ' onclick="openLevel(event);">' : '<img src="img/button_level_locked.png" alt="Level locked">';
+    html += (i <= lvlTmp) ? '<img src="img/button_level' + i + '.png" alt="Level ' + i + '" id =' + i + ' class="animated slideInUp"  onclick="openLevel(event);">' : '<img src="img/button_level_locked.png" class="animated slideInUp" alt="Level locked">';
     html += '</div>';
   }
   canvas.innerHTML = html;
@@ -310,7 +354,7 @@ function setResultButtons(result, endOfGame) {
   var canvas = document.getElementById("modalButtons");
   var html = "";
   if (result) {
-    if (result && endOfGame) {
+    if (endOfGame) {
       html += '<div id="goHomeButton"><img src="img/home_button.png" alt="Home button" onclick="openLevelsScreen();"/></div>' +       '<div id="retryButton"><img src="img/retry_button.png" alt="Retry button" onclick="retryLevel();"/></div>'
     }
     else {
@@ -325,9 +369,7 @@ function setResultButtons(result, endOfGame) {
 
 function setLevelFigure(flag) {
   var canvas = document.getElementById("modalFigure");
-  if (flag) {
-    canvas.innerHTML = '<img src="img/levels/' + localStorage.getItem("level") + '.png" alt="Level figure"/>';;
-  }
+    canvas.innerHTML = (flag) ? '<img src="img/levels/' + localStorage.getItem("level") + '.png" alt="Level figure"/>' : "";
 }
 
 function setLevelClue() {
@@ -335,17 +377,17 @@ function setLevelClue() {
   canvas.innerHTML = '<img src="img/levels/' + localStorage.getItem("level") + '_dots.png" alt="Level clue"/>';;
 }
 
-function showResultModal(win) {
+function showResultModal (win) {
   hideDots();
   if(win) {
     setLevelFigure(true);
     setResultTitle("you_won_title");
-    if (Number(localStorage.getItem("level")) + 1 > GAME_LEVELS) {
-      setResultButtons(true, true);
-    }
-    else {
+    if ((Number(localStorage.getItem("level")) + 1 < GAME_LEVELS) && !clue) {
       increaseLevel();
       setResultButtons(true, false);
+    }
+    else {
+      setResultButtons(true, true);
     }
   }
   else {
@@ -354,6 +396,9 @@ function showResultModal(win) {
     setResultButtons(false);
   }
   resultGameModal.style.display = 'flex';
+  modalFigure.className = (win) ? "animated slideInDown" : "";
+  modalText.className = (win) ? "animated fadeIn" : "animated slideInDown";
+  modalButtons.className = "animated slideInUp";
 }
 
 function retryLevel() {
@@ -380,10 +425,10 @@ function adjustSVG(contentDots) {
 }
 
 function drawLine() {
-  var arrayLength = arrayDots.length;
+  var arrayLength = arrayDotsPushed.length;
   if (arrayLength > 1) {
-    var dot = arrayDots[arrayLength - 1];
-    var lastDot = arrayDots[arrayLength - 2];
+    var dot = arrayDotsPushed[arrayLength - 1];
+    var lastDot = arrayDotsPushed[arrayLength - 2];
     svg.innerHTML += "<line x1=" + lastDot.position.x + " y1=" + lastDot.position.y + " x2=" + dot.position.x + " y2=" + dot.position.y + "></line>\n";
   }
 }
@@ -404,7 +449,7 @@ function hideDots() {
 
 function resetSVG() {
   svg.innerHTML = "";
-  arrayDots = [];
+  arrayDotsPushed = [];
 }
 
 function getPositionDot(idDot) {
