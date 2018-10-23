@@ -161,9 +161,9 @@ function showClueModal() {
   }
 }
 
-function activeClue(event) {
+function activeClue() {
   clue = !clue;
-  event.target.src = (clue) ? "img/clue_button_active.png" : "img/clue_button.png";
+  clueButton.firstElementChild.src = (clue) ? "img/clue_button_active.png" : "img/clue_button.png";
   level();
 }
 
@@ -257,7 +257,20 @@ function changeButtonState(event) {
 
 function validateLevel() {
   var flag = true;
-  for (var i = 0; i < arrayDots.length; i++) {
+  var pos;
+  if (arrayDots[0] == arrayDots[arrayDots.length - 1]) {
+    pos = 0;
+  }
+  else {
+    for (var j = 0; j < arrayDots.length; j++){
+      if (arrayDots[j] == arrayDots[arrayDots.length - 1]){
+        pos = j;
+        break;
+      }
+    }
+  }
+
+  for (var i = pos; i < arrayDots.length; i++) {
     if (arrayDots[i] != arrayDotsPushed[i].id) {
       if (clue) {
         return false;
@@ -267,8 +280,8 @@ function validateLevel() {
     }
   }
   if (!clue && !flag) {
-    for (var i = 0; i < arrayDots.length; i++) {
-      if (arrayDotsPushed[i].id != arrayDots[arrayDots.length - 1 - i]) {
+    for (var i = pos; i < arrayDots.length; i++) {
+      if (arrayDotsPushed[i].id != arrayDots[arrayDots.length - 1 - i + pos]) {
         return false;
       }
     }
@@ -369,7 +382,7 @@ function setResultButtons(result, endOfGame) {
 
 function setLevelFigure(flag) {
   var canvas = document.getElementById("modalFigure");
-    canvas.innerHTML = (flag) ? '<img src="img/levels/' + localStorage.getItem("level") + '.png" alt="Level figure"/>' : "";
+  canvas.innerHTML = (flag) ? '<img src="img/levels/' + localStorage.getItem("level") + '.png" alt="Level figure"/>' : "";
 }
 
 function setLevelClue() {
@@ -382,12 +395,12 @@ function showResultModal (win) {
   if(win) {
     setLevelFigure(true);
     setResultTitle("you_won_title");
-    if ((Number(localStorage.getItem("level")) + 1 < GAME_LEVELS) && !clue) {
-      increaseLevel();
-      setResultButtons(true, false);
+    if ((Number(localStorage.getItem("level")) + 1 > GAME_LEVELS) | clue) {
+      setResultButtons(true, true);
     }
     else {
-      setResultButtons(true, true);
+      increaseLevel();
+      setResultButtons(true, false);
     }
   }
   else {
@@ -404,6 +417,9 @@ function showResultModal (win) {
 function retryLevel() {
   resultGameModal.style.display = 'none';
   openContentScreen();
+  if (clue) {
+    activeClue();
+  }
 }
 
 function nextLevel() {
